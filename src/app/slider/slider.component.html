@@ -1,0 +1,9 @@
+<div class="demo-border" #nav>
+<app-drag-scroll>
+  <app-drag-scroll-item *ngFor="let image of imagelist"
+                        [item]="'assets/img/' + image"
+
+                        [appDragScrollItem]="config"
+  ></app-drag-scroll-item>
+</app-drag-scroll>
+</div>
