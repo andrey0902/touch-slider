@@ -17,14 +17,14 @@ export class DragScrollItemDirective implements OnInit, AfterViewInit, AfterCont
     console.log(e.innerWidth);
     // this.calculateShowingItem(e.innerWidth);
     // this.slideMustShow.emit(this.calculateShowingItem(e.innerWidth));
-    this.el.nativeElement.style.width = `${this.calculateWidthItem(this.calculateShowingItem(this.getWindowWidth()))}px`;
+    this._elementRef.nativeElement.style.width = `${this.calculateWidthItem(this.calculateShowingItem(this.getWindowWidth()))}px`;
   }
 
   @HostListener('window:load', ['$event.target']) public windowWidth(e) {
     this.windowLoadWidth = e.body.offsetWidth;
     // console.log('load', e.body.offsetWidth);
   }
-  constructor(private el: ElementRef) {
+  constructor(public _elementRef: ElementRef) {
   }
   ngOnInit(): void {
     console.log(this.config);
@@ -34,11 +34,11 @@ export class DragScrollItemDirective implements OnInit, AfterViewInit, AfterCont
   }
 
   ngAfterContentInit(): void {
-    // console.log('parent width1', this.el.nativeElement.parentElement);
+    // console.log('parent width1', this._elementRef.nativeElement.parentElement);
     setTimeout(() => {
-      // console.log('parent width', this.el.nativeElement.parentElement.offsetWidth);
+      // console.log('parent width', this._elementRef.nativeElement.parentElement.offsetWidth);
       // console.log('width of the scrin',  this.calculateWidthItem(this.calculateShowingItem(this.getWindowWidth())));
-      this.el.nativeElement.style.width = `${this.calculateWidthItem(this.calculateShowingItem(this.getWindowWidth()))}px`;
+      this._elementRef.nativeElement.style.width = `${this.calculateWidthItem(this.calculateShowingItem(this.getWindowWidth()))}px`;
     }, 300);
   }
 
@@ -54,11 +54,11 @@ export class DragScrollItemDirective implements OnInit, AfterViewInit, AfterCont
   }
 
   public getWindowWidth() {
-    return this.windowLoadWidth || this.el.nativeElement.parentElement.offsetWidth;
+    return this.windowLoadWidth || this._elementRef.nativeElement.parentElement.offsetWidth;
   }
 
   public calculateWidthItem(countShowSlide: number): number {
-    const parentWidth: number = this.el.nativeElement.parentElement.offsetWidth;
+    const parentWidth: number = this._elementRef.nativeElement.parentElement.offsetWidth;
     return parentWidth / countShowSlide;
   }
 }

@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 
 import { DragScrollItemDirective } from '../drag-scroll-item.directive';
+import { DragScrollItemComponent } from '../drag-scroll-item/drag-scroll-item.component';
 
 @Component({
   selector: 'app-drag-scroll',
@@ -180,8 +181,8 @@ export class DragScrollComponent implements OnInit, OnDestroy, AfterViewInit, On
 
       // store ele width height for later user
       this.markElDimension();
-
-      this._renderer.setStyle(this._contentRef.nativeElement, 'width', this.elWidth);
+      // this is i camente for change size of container
+      // this._renderer.setStyle(this._contentRef.nativeElement, 'width', this.elWidth);
       this._renderer.setStyle(this._contentRef.nativeElement, 'height', this.elHeight);
 
       if (this.wrapper) {
@@ -203,14 +204,14 @@ export class DragScrollComponent implements OnInit, OnDestroy, AfterViewInit, On
   }
 
   ngAfterViewChecked() {
-    // avoid extra checks
-    // if (this._children['_results'].length !== this.prevChildrenLength) {
-    //
-    //   this.markElDimension();
-    //   this.checkScrollbar();
-    //   this.prevChildrenLength = this._children['_results'].length;
-    //   this.checkNavStatus();
-    // }
+ /*   avoid extra checks */
+    if (this._children['_results'].length !== this.prevChildrenLength) {
+
+      this.markElDimension();
+      this.checkScrollbar();
+      this.prevChildrenLength = this._children['_results'].length;
+      this.checkNavStatus();
+    }
   }
 
   ngOnDestroy() {
@@ -504,12 +505,7 @@ export class DragScrollComponent implements OnInit, OnDestroy, AfterViewInit, On
     });
   }
 
-  private currentChildWidth(cb: (
-    currentClildWidth: number,
-    nextChildrenWidth: number,
-    childrenWidth: number,
-    index: number,
-    breakFunc: () => void) => void) {
+  private currentChildWidth(cb) {
     let childrenWidth = 0;
     let shouldBreak = false;
     const breakFunc = function() {
@@ -523,7 +519,6 @@ export class DragScrollComponent implements OnInit, OnDestroy, AfterViewInit, On
       if (shouldBreak) {
         break;
       }
-
       const nextChildrenWidth = childrenWidth + this._children['_results'][i + 1]._elementRef.nativeElement.clientWidth;
       const currentClildWidth = this._children['_results'][i]._elementRef.nativeElement.clientWidth;
       cb(currentClildWidth, nextChildrenWidth, childrenWidth, i, breakFunc);

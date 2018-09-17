@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { DragScrollComponent } from './drag-scroll/drag-scroll.component';
 
 @Component({
   selector: 'app-slider',
@@ -6,6 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./slider.component.css']
 })
 export class SliderComponent implements OnInit {
+  @ViewChild(DragScrollComponent) public dragScroll: DragScrollComponent;
   @Input() public config = {
     slidesToShow: 3,
     responsive: [
@@ -73,10 +75,35 @@ export class SliderComponent implements OnInit {
     'yoda.png',
     'yolo.png'
   ];
+
+  leftNavDisabled = false;
+  rightNavDisabled = false;
   constructor() { }
 
   ngOnInit() {
     console.log(this.config);
+  }
+
+  public next() {
+    console.log(this.dragScroll);
+    this.dragScroll.moveRight();
+  }
+
+  public prev() {
+    this.dragScroll.moveLeft();
+  }
+
+
+  leftBoundStat(reachesLeftBound: boolean) {
+    this.leftNavDisabled = reachesLeftBound;
+  }
+
+  rightBoundStat(reachesRightBound: boolean) {
+    this.rightNavDisabled = reachesRightBound;
+  }
+
+  onSnapAnimationFinished() {
+    console.log('snap animation finished');
   }
 
 }
